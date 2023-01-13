@@ -9,7 +9,7 @@ export enum ShiftTime {
 export interface Shift {
   id: number;
   name: string;
-  shiftDate: Date;
+  shiftDate: string;
   shiftTime: ShiftTime;
   user?: User;
   checkin: Date | null;

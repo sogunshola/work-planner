@@ -29,7 +29,7 @@ export class UserEntity extends BaseEntity implements User {
   @Column({ enum: Role, default: Role.WORKER, type: 'enum' })
   role: Role;
 
-  @OneToMany(() => ShiftEntity, shift => shift.user, { eager: true })
+  @OneToMany(() => ShiftEntity, shift => shift.user)
   shifts: ShiftEntity[];
 
   @Column()

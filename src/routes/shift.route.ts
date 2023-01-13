@@ -15,9 +15,9 @@ class ShiftRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, authMiddleware, this.shiftController.getShifts);
-    this.router.get(`${this.path}/:id(\\d+)`, authMiddleware, this.shiftController.getShiftById);
-    this.router.post(`${this.path}`, authMiddleware, validationMiddleware(CreateShiftDto, 'body'), this.shiftController.createShift);
+    this.router.get(`${this.path}`, authMiddleware, this.shiftController.get);
+    this.router.get(`${this.path}/:id(\\d+)`, authMiddleware, this.shiftController.getById);
+    this.router.post(`${this.path}`, authMiddleware, validationMiddleware(CreateShiftDto, 'body'), this.shiftController.post);
     this.router.get(`${this.path}/user/:userId(\\d+)`, authMiddleware, this.shiftController.getShiftByUserId);
     this.router.get(`${this.path}/myShifts`, authMiddleware, this.shiftController.getMyShifts);
     this.router.post(`${this.path}/:id/checkIn`, authMiddleware, this.shiftController.checkIn);

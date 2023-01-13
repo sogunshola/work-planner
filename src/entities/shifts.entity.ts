@@ -10,8 +10,8 @@ export class ShiftEntity extends BaseEntity implements Shift {
   @Column()
   name: string;
 
-  @Column()
-  shiftDate: Date;
+  @Column({ type: 'date' })
+  shiftDate: string;
 
   @Column({ enum: ShiftTime, type: 'enum' })
   shiftTime: ShiftTime;

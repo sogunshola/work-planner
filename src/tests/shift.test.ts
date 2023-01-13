@@ -82,7 +82,7 @@ describe('Testing Shifts', () => {
         name: 'test1',
       });
 
-      const response = await shiftService.findShiftById(1);
+      const response = await shiftService.getById(1);
       expect(response.id).toEqual(1);
       expect(response.name).toEqual('test1');
     });
@@ -93,7 +93,7 @@ describe('Testing Shifts', () => {
       ShiftEntity.findOne = jest.fn().mockReturnValue(null);
 
       try {
-        await shiftService.findShiftById(1);
+        await shiftService.getById(1);
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
         expect(error.message).toEqual('This shift does not exist');
@@ -108,7 +108,7 @@ describe('Testing Shifts', () => {
       ShiftEntity.findOne = jest.fn().mockReturnValue(null);
       ShiftEntity.save = jest.fn().mockReturnValue({
         id: 1,
-        shiftDate: '2021-01-01 00:00:00',
+        shiftDate: '2021-01-01',
         shiftTime: ShiftTime.AFTERNOON,
         userId: 1,
         checkin: null,
@@ -117,7 +117,7 @@ describe('Testing Shifts', () => {
         name: 'test1',
       });
 
-      const response = await shiftService.createNewShift({
+      const response = await shiftService.post({
         shiftDate: '2021-01-01 00:00:00',
         shiftTime: ShiftTime.AFTERNOON,
         userId: 1,
@@ -133,7 +133,7 @@ describe('Testing Shifts', () => {
 
       ShiftEntity.findOne = jest.fn().mockReturnValue({
         id: 1,
-        shiftDate: '2024-01-01 00:00:00',
+        shiftDate: '2024-01-01',
         shiftTime: ShiftTime.AFTERNOON,
         userId: 1,
         checkIn: null,
@@ -143,7 +143,7 @@ describe('Testing Shifts', () => {
       });
 
       try {
-        await shiftService.createNewShift({
+        await shiftService.post({
           shiftDate: '2024-01-01 00:00:00',
           shiftTime: ShiftTime.AFTERNOON,
           userId: 1,
@@ -165,13 +165,6 @@ describe('Testing Shifts', () => {
         shiftDate: moment(),
         shiftTime: ShiftTime.AFTERNOON,
         userId: 1,
-        user: {
-          email: 'test@email.com',
-          name: 'test user',
-          role: Role.WORKER,
-          id: 1,
-          isActive: true,
-        },
         checkin: null,
         checkout: null,
         completed: false,
@@ -358,13 +351,6 @@ describe('Testing Shifts', () => {
         shiftDate: moment(),
         shiftTime: ShiftTime.AFTERNOON,
         userId: 1,
-        user: {
-          email: 'test@email.com',
-          name: 'test user',
-          role: Role.WORKER,
-          id: 1,
-          isActive: true,
-        },
         checkin: null,
         checkout: null,
         completed: false,
@@ -395,13 +381,6 @@ describe('Testing Shifts', () => {
         shiftDate: moment(),
         shiftTime: ShiftTime.AFTERNOON,
         userId: 1,
-        user: {
-          email: 'test@email.com',
-          name: 'test user',
-          role: Role.WORKER,
-          id: 1,
-          isActive: true,
-        },
         checkin: '2021-01-01 00:00:00',
         checkout: '2021-01-01 08:00:00',
         completed: true,
@@ -432,13 +411,6 @@ describe('Testing Shifts', () => {
         shiftDate: moment(),
         shiftTime: ShiftTime.AFTERNOON,
         userId: 1,
-        user: {
-          email: 'test@email.com',
-          name: 'test user',
-          role: Role.WORKER,
-          id: 1,
-          isActive: true,
-        },
         // this test will not pass anymore by 2024
         checkin: '2024-01-01 00:00:00',
         checkout: null,

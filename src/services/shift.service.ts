@@ -17,7 +17,7 @@ class ShiftService extends Repository<ShiftEntity> {
     return shifts;
   }
 
-  public async findShiftById(shiftId: number): Promise<ShiftEntity> {
+  public async getById(shiftId: number): Promise<ShiftEntity> {
     if (isEmpty(shiftId)) throw new HttpException(400, 'shiftId is empty');
 
     const findShift = await ShiftEntity.findOne({ where: { id: shiftId } });
@@ -26,7 +26,7 @@ class ShiftService extends Repository<ShiftEntity> {
     return findShift;
   }
 
-  public async findShiftByUserId(userId: number): Promise<Shift[]> {
+  public async getByUserId(userId: number): Promise<Shift[]> {
     if (isEmpty(userId)) throw new HttpException(400, 'userId is empty');
 
     const findShifts = await ShiftEntity.find({ where: { userId: userId } });
@@ -34,7 +34,7 @@ class ShiftService extends Repository<ShiftEntity> {
     return findShifts;
   }
 
-  public async createNewShift(shiftData: CreateShiftDto): Promise<Shift> {
+  public async post(shiftData: CreateShiftDto): Promise<Shift> {
     const findShift: ShiftEntity = await ShiftEntity.findOne({
       where: {
         name: shiftData.name,
@@ -53,16 +53,16 @@ class ShiftService extends Repository<ShiftEntity> {
   }
 
   public async deleteShift(shiftId: number): Promise<Shift> {
-    const findShift = await this.findShiftById(shiftId);
+    const findShift = await this.getById(shiftId);
 
     await ShiftEntity.delete({ id: shiftId });
     return findShift;
   }
 
   public async checkInShift(shiftId: number, user: User): Promise<Shift> {
-    const findShift = await this.findShiftById(shiftId);
+    const findShift = await this.getById(shiftId);
 
-    if (findShift.user.id != user.id) throw new HttpException(400, `This shift does not belong to you`);
+    if (findShift.userId != user.id) throw new HttpException(400, `This shift does not belong to you`);
 
     // confirm that the checkin date is the same as the shift date
     if (moment(findShift.shiftDate).format('YYYY-MM-DD') != moment().format('YYYY-MM-DD')) {
@@ -79,9 +79,9 @@ class ShiftService extends Repository<ShiftEntity> {
   }
 
   public async checkOutShift(shiftId: number, user: User): Promise<Shift> {
-    const findShift = await this.findShiftById(shiftId);
+    const findShift = await this.getById(shiftId);
 
-    if (findShift.user.id != user.id) throw new HttpException(400, `This shift does not belong to you`);
+    if (findShift.userId != user.id) throw new HttpException(400, `This shift does not belong to you`);
 
     // confirm shift is not completed
     if (findShift.completed) {
@@ -103,7 +103,7 @@ class ShiftService extends Repository<ShiftEntity> {
   }
 
   public async completeShift(shiftId: number): Promise<Shift> {
-    const findShift = await this.findShiftById(shiftId);
+    const findShift = await this.getById(shiftId);
 
     findShift.completed = true;
     await findShift.save();
